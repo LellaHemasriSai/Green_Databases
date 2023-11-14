@@ -60,7 +60,7 @@ class CPU():
     def get_cpu_percent(self,):
         # cpu_percent:float - cpu utilizationin [0, 1], The current cpu utilization from python processes
         os_dict = {
-            # 'Linux': get_cpu_percent_linux,
+            'Linux': get_cpu_percent_linux,
             'Windows': get_cpu_percent_windows,
             # 'Darwin': get_cpu_percent_mac_os
         }
@@ -284,7 +284,61 @@ def find_tdp_value(cpu_name, f_table_name, constant_value=CONSTANT_CONSUMPTION, 
                 tmp_elements.append(element[0])
         return find_max_tdp(tmp_elements)
 
+def get_cpu_percent_linux(cpu_processes="current"):
+    """
+        This function calculates CPU utilization on Linux.
+        
+        Parameters
+        ----------
+        cpu_processes: str
+            if cpu_processes == "current", then calculates CPU utilization percent only for the current running process
+            if cpu_processes == "all", then calculates full CPU utilization percent(sum of all running processes)
+        
+        Returns
+        -------
+        cpu_percent: float
+            CPU utilization fraction. 'cpu_percent' is in [0, 1]. 
 
+    """
+    # number of cpu cores
+    if cpu_processes == "current":
+        pid = os.getpid()
+        # execute the top command with the pid filter 
+        output = subprocess.run(["top", "-b", "-n1", "-p", str(pid)], capture_output=True, text=True)
+    elif cpu_processes == "all":
+        # execute the top command with the grep command to filter the output
+        output = subprocess.run(["top", "-b", "-n1"], capture_output=True, text=True)
+    else: 
+        raise ValueError(f"'cpu_processes' parameter can be only 'current' or 'all', now it is '{cpu_processes}'")
+    cpu_num = psutil.cpu_count()
+    # check if the output is empty
+    if not output.stdout:
+        return 0
+    else:
+        # split the output into lines
+        lines = output.stdout.split('\n')
+        # display(lines)
+        # variable to store the sum of all process CPU usage
+        sum_cpu = 0
+        # flag to check if we are at the processes section
+        process_section = False
+        # iterate through the lines
+        for line in lines:
+            # check if we are at the processes section
+            if 'PID' in line:
+                process_section = True
+            elif process_section:
+                # check if we reached the end of the processes section
+                if not line:
+                    break
+                # split the line into words
+                words = line.split()
+                # check if the line contains a process
+                if len(words) > 0:
+                    # the CPU usage percentage is the 8th word
+                    sum_cpu += float(words[8].replace(',','.'))
+    return sum_cpu / (cpu_num * 100)
+    
 # function to get cpu percent for windows
 def get_cpu_percent_windows(cpu_processes="current"):
     cpu_percent = 0
