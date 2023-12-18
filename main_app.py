@@ -1,5 +1,6 @@
 import time
 import csv
+import ast
 import mysql.connector
 from pymongo import MongoClient
 import re
@@ -1023,7 +1024,6 @@ def carbon_to_tv(kg_carbon):
 # -----------------------------------------
 @app.route('/get_single_query_details', methods=['POST'])
 def get_single_query_details():
-    try:
         selected_option = request.form.get('database_type')
 
         username = ""
@@ -1059,10 +1059,6 @@ def get_single_query_details():
                 query, username, password, database_name)
 
         return render_template('dbJoules_result.html', cpu_consumption=res[0], ram_consumption=res[1], total_consumption=res[2], time_taken=res[3])
-
-    except Exception as e:
-        error = "Please enter valid credentials or query"
-        return render_template('query_home.html', error=error)
 
 
 '''
@@ -1301,6 +1297,20 @@ def execute_mongodb_query(query, db_name):
 
         result = collection.delete_many(*arg_dict)
         print(result)
+        
+    elif "aggregate" in query_field:
+        print("joining documents")
+        pattern = r'(\w+)\.(\w+)\.(\w+)\(\[\s*({.*})\s*\]\)'
+        matches = re.match(pattern, query)
+        db_name, collection_name, method_name, aggregation_stage = matches.groups()
+        arr = ast.literal_eval(aggregation_stage)
+        list_of_objects = [arr]
+        result = db[collection_name].aggregate(list_of_objects)
+        for document in result:
+            print(document)
+        
+        
+        
 
     client.close()
     # Tracker object stops
