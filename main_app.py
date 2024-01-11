@@ -30,6 +30,7 @@ from couchbase.n1ql import N1QLQuery
 from queries import mysql_queries, mongodb_queries, postgresql_queries, couchbase_queries
 from datetime import datetime
 from decimal import Decimal
+# import datetime 
 
 sys.path.insert(0, "./")
 sys.path.insert(0, "./")
@@ -1217,7 +1218,16 @@ def execute_mongodb_query(query, db_name):
     # executes the query operation from the query_field
     if "insertOne" in query_field:
         print("inserting one document")
-        query_doc = query_field.split('insertOne(')[1].split(')')[0]
+        query_doc = re.search('insertOne\((.*)\)', query_field)
+
+        if query_doc is not None:
+            query_doc = query_doc.group(1)
+            query_doc = query_doc.replace('ISODate()', 'datetime.datetime.now()')
+            print(query_doc)  # Outputs: {name: "Max"}, {"writeConcern": {"w": "majority", "wtimeout": 5000}}
+        # query_doc = re.search('insertOne\((.*)\)', query_field).group(1)
+        print(query_doc)
+        
+        # print(query_doc)
         arg_dict = eval(query_doc)
         result = collection.insert_one(arg_dict)
         print(result)
@@ -1225,8 +1235,25 @@ def execute_mongodb_query(query, db_name):
     elif "insertMany" in query_field:
         print("inserting many documents")
         query_doc = query_field.split('insertMany(')[1].split(')')[0]
-        arg_dict = eval(query_doc)
-        result = collection.insert_many(arg_dict)
+        # print(query_doc)
+        if '],' in query_doc:
+            comma_index = query_doc.index('],') + 1
+
+            # Extract the list and dictionary parts from the input string
+            list_str = query_doc[:comma_index]
+            dict_str = query_doc[comma_index + 1:].strip()
+            # print(list_str)
+            # print(dict_str)
+            options_dict = json.loads(dict_str)
+            # print(options_dict)
+            arg_dict = eval(list_str)
+            if options_dict.get('ordered') == "false":
+                result = collection.insert_many(arg_dict,ordered=False)
+            else:
+                result = collection.insert_many(arg_dict)
+        else:
+            arg_dict = eval(query_doc)
+            result = collection.insert_many(arg_dict)
         print(result)
 
     elif "findOne" in query_field:
@@ -1245,12 +1272,17 @@ def execute_mongodb_query(query, db_name):
             result = collection.find()
             print(result)
         else:
-            split_quer_doc = query_doc.split(',')
-            arg_dict = []
-            for q in split_quer_doc:
-                arg_dict.append(eval(q))
-
-            result = collection.find(*arg_dict)
+            # query_doc=query_doc.replace('{', '').replace('}', '')
+            # split_quer_doc = query_doc.split(',')
+            # print(split_quer_doc[0])
+            # arg_dict = []
+            # for q in split_quer_doc:
+            #     arg_dict.append(eval(q))
+            # print(arg_dict)
+            # result = collection.find(*arg_dict)
+            # print(result)
+            query_params = json.loads(query_doc)
+            result = collection.find(query_params)
             print(result)
 
     elif "updateOne" in query_field:
@@ -1309,7 +1341,24 @@ def execute_mongodb_query(query, db_name):
         for document in result:
             print(document)
         
-        
+    elif "distinct" in query_field:
+        print("finding distinct documents")
+        query_doc = query_field.split('distinct(')[1].split(')')[0]
+        arg_dict = eval(query_doc)
+        result = collection.distinct(arg_dict)
+        print(result)
+    elif "countDocuments" in query_field:
+        print("counting documents")
+        query_doc = query_field.split('countDocuments(')[1].split(')')[0]
+        arg_dict = eval(query_doc)
+        result = collection.count_documents(arg_dict)
+        print(result)
+    elif "estimatedDocumentCount" in query_field:
+        print("counting documents")
+        query_doc = query_field.split('estimatedDocumentCount(')[1].split(')')[0]
+        # arg_dict = eval(query_doc)
+        result = collection.estimated_document_count()
+        print(result)
         
 
     client.close()
