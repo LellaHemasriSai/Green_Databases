@@ -3,7 +3,7 @@ mysql_queries = ['select User_ID,Join_Date,Country,Age from netflix_userbase whe
                  "INSERT INTO netflix_userbase (User_ID, Subscription_Type, Monthly_Revenue, Join_Date, Last_Payment_Date, Country, Age, Gender, Device, Plan_Duration) VALUES (2501, 'Basic', 18, '2022-08-31', '2023-07-21', 'United States', 33, 'Female', 'Smart TV', '1 Month') ON DUPLICATE KEY UPDATE User_ID=2502;",
                  "UPDATE netflix_userbase SET Age = 30 WHERE User_ID = 1;",
                  "DELETE FROM netflix_userbase WHERE User_ID = 2;"]
-mongodb_queries = ["db.netflix_userbase.find({'Subscription_Type': 'Basic'})",
+mongodb_queries = ['db.netflix_userbase.find({"Subscription_Type": "Basic"})',
                    'db.netflix_userbase.insertOne({ "User_ID": 2501, "Subscription_Type": "Basic" , "Monthly_Revenue": 18, "Join_Date": "2022-08-31", "Last_Payment_Date": "2023-07-21" , "Country": "United States", "Age": 33 , "Gender": "Female" , "Device": "Smart TV", "Plan_Duration": "1 Month"})',
                    'db.netflix_userbase.updateOne({"User_ID" :1}, {"$set": {"Age":30} })',
                    'db.netflix_userbase.deleteOne({"User_ID":2})']
@@ -23,7 +23,7 @@ couchbase_queries = ["select User_ID,Join_Date,Country,Age from netflix_userbase
 #                  "INSERT INTO online_retail (InvoiceNo,StockCode,Description,Quantity,InvoiceDate,UnitPrice,CustomerID,Country) VALUES ('8569I','33572','Big Car',3,'01-12-2010  08:26:00',23.4,17859,'United Kingdom');",
 #                  "UPDATE online_retail SET Country = 'Australia' WHERE InvoiceNo = '536396';",
 #                  "DELETE FROM online_retail WHERE InvoiceNo = '536396';"]
-# mongodb_queries = ["db.online_retail.find({'StockCode': '85123A'})",
+# mongodb_queries = ['db.online_retail.find({"StockCode": "85123A"})',
 #                    'db.online_retail.insertOne({ "InvoiceNo": "8569I", "StockCode": "33572" , "Description": "Big Car", "Quantity": 3, "InvoiceDate": "01-12-2010  08:26:00" , "UnitPrice": "23.4", "CustomerID": 17859 , "Country": "United Kingdom"})',
 #                    'db.online_retail.updateOne({"InvoiceNo" :"536396"}, {"$set": {"Country":"Australia"} })',
 #                    'db.online_retail.deleteOne({"InvoiceNo" :"536396"})']
@@ -44,7 +44,7 @@ couchbase_queries = ["select User_ID,Join_Date,Country,Age from netflix_userbase
 #                  "INSERT INTO all_energy_statistics (country_or_area,commodity_transaction,year,unit,quantity,quantity_footnotes,category) VALUES ('India','Additives and Oxygenates - Exports',2000,'Metric tons,  thousand',10,'1','additives_and_oxygenates');",
 #                  "UPDATE all_energy_statistics SET country_or_area = 'Australia' WHERE year = 1997;",
 #                  "DELETE FROM all_energy_statistics WHERE year = 1997;"]
-# mongodb_queries = ["db.all_energy_statistics.find({'year': 1995})",
+# mongodb_queries = ['db.all_energy_statistics.find({"year": 1995})',
 #                    'db.all_energy_statistics.insertOne({ "country_or_area": "India", "commodity_transaction": "Additives and Oxygenates - Exports" , "year": 2000, "unit": "Metric tons,  thousand", "quantity": 10 , "quantity_footnotes": "1", "category": "additives_and_oxygenates" )',
 #                    'db.all_energy_statistics.updateOne({"year": 1997}, {"$set": {"country_or_area": "Australia"} })',
 #                    'db.all_energy_statistics.deleteOne({"year": 1997})']
