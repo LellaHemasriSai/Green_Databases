@@ -30,6 +30,17 @@ from couchbase.n1ql import N1QLQuery
 from queries import mysql_queries, mongodb_queries, postgresql_queries, couchbase_queries
 from datetime import datetime
 from decimal import Decimal
+maxInt = sys.maxsize
+
+while True:
+    # decrease the maxInt value by factor 10 
+    # as long as the OverflowError occurs.
+
+    try:
+        csv.field_size_limit(maxInt)
+        break
+    except OverflowError:
+        maxInt = int(maxInt/10)
 # import datetime 
 
 sys.path.insert(0, "./")
@@ -95,7 +106,7 @@ def upload():
                         csv_writer.writerows(new_data)
                 os.remove(fp)
                 os.rename(new_fp, fp)
-                log_file(f.filename, data)
+                # log_file(f.filename, data)
                 return render_template('column_names.html', items=column_names)
             else:
                 return "File not found."
@@ -537,7 +548,7 @@ def create_couchbase_collection(user, password):
         )
         cluster.buckets().create_bucket(settings)
 
-        time.sleep(2)
+        time.sleep(10)
 
         bucket = cluster.bucket(bucket_name)
         collection = bucket.default_collection()
