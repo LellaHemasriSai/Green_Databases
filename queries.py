@@ -20,21 +20,21 @@
 
 # online retail
 mysql_queries = ['select ï»¿InvoiceNo, Description from online_retail where StockCode= "85123A"',
-                 "INSERT INTO online_retail (ï»¿InvoiceNo,StockCode,Description,Quantity,InvoiceDate,UnitPrice,CustomerID,Country) VALUES ('8569I','33572','Big Car',3,'01-12-2010  08:26:00',23.4,17859,'United Kingdom');",
+                 "INSERT INTO online_retail (ï»¿InvoiceNo,StockCode,Description,Quantity,InvoiceDate,UnitPrice,CustomerID,Country) VALUES ('8569I','33572','Big Car',3,'01-12-2010  08:26:00',23.4,'17859','United Kingdom');",
                  "UPDATE online_retail SET Country = 'Australia' WHERE ï»¿InvoiceNo = '536396';",
                  "DELETE FROM online_retail WHERE ï»¿InvoiceNo = '536396';"]
 mongodb_queries = ['db.online_retail.find({"StockCode": "85123A"})',
-                   'db.online_retail.insertOne({ "ï»¿InvoiceNo": "8569I", "StockCode": "33572" , "Description": "Big Car", "Quantity": 3, "InvoiceDate": "01-12-2010  08:26:00" , "UnitPrice": "23.4", "CustomerID": 17859 , "Country": "United Kingdom"})',
+                   'db.online_retail.insertOne({ "ï»¿InvoiceNo": "8569I", "StockCode": "33572" , "Description": "Big Car", "Quantity": 3, "InvoiceDate": "01-12-2010  08:26:00" , "UnitPrice": "23.4", "CustomerID": "17859" , "Country": "United Kingdom"})',
                    'db.online_retail.updateOne({"ï»¿InvoiceNo" :"536396"}, {"$set": {"Country":"Australia"} })',
                    'db.online_retail.deleteOne({"ï»¿InvoiceNo" :"536396"})']
 
 postgresql_queries = ["select ï»¿InvoiceNo, Description from online_retail where StockCode= '85123A'",
-                      "INSERT INTO online_retail (ï»¿InvoiceNo,StockCode,Description,Quantity,InvoiceDate,UnitPrice,CustomerID,Country) VALUES ('8569I','33572','Big Car',3,'01-12-2010  08:26:00',23.4,17859,'United Kingdom')",
+                      "INSERT INTO online_retail (ï»¿InvoiceNo,StockCode,Description,Quantity,InvoiceDate,UnitPrice,CustomerID,Country) VALUES ('8569I','33572','Big Car',3,'01-12-2010  08:26:00',23.4,'17859','United Kingdom')",
                       "UPDATE online_retail SET Country = 'Australia' WHERE ï»¿InvoiceNo = '536396';",
                       "DELETE FROM online_retail WHERE ï»¿InvoiceNo = '536396';"]
 
 couchbase_queries = ["select ï»¿InvoiceNo, Description from online_retail where StockCode= '85123A'",
-                     "INSERT INTO online_retail (ï»¿InvoiceNo,StockCode,Description,Quantity,InvoiceDate,UnitPrice,CustomerID,Country) VALUES ('8569I','33572','Big Car',3,'01-12-2010  08:26:00',23.4,17859,'United Kingdom')",
+                     "INSERT INTO online_retail (ï»¿InvoiceNo,StockCode,Description,Quantity,InvoiceDate,UnitPrice,CustomerID,Country) VALUES ('8569I','33572','Big Car',3,'01-12-2010  08:26:00',23.4,'17859','United Kingdom')",
                       "UPDATE online_retail SET Country = 'Australia' WHERE ï»¿InvoiceNo = '536396';",
                       "DELETE FROM online_retail WHERE ï»¿InvoiceNo = '536396';"]
 
