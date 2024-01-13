@@ -29,7 +29,7 @@ couchbase_queries = ["select User_ID,Join_Date,Country,Age from netflix_userbase
 #                  "INSERT INTO online_retail (ï»¿InvoiceNo,StockCode,Description,Quantity,InvoiceDate,UnitPrice,CustomerID,Country) VALUES ('8569I','33572','Big Car',3,'01-12-2010  08:26:00','234','17859','United Kingdom');",
 #                  "UPDATE online_retail SET Country = 'Australia' WHERE ï»¿InvoiceNo = '536396';",
 #                  "DELETE FROM online_retail WHERE ï»¿InvoiceNo = '536396';",
-#                   'SELECT a.StockCode, b.Country FROM online_retail AS a LEFT JOIN online_retail AS b ON a.Quantity = b.Quantity where a.StockCode="";']
+#                   'SELECT a.StockCode, b.Country FROM online_retail AS a LEFT JOIN online_retail AS b ON a.Quantity = b.Quantity where a.StockCode="85123";']
 # 
 # mongodb_queries = ['db.online_retail.find({"StockCode": "85123A"})',
 #                    'db.online_retail.insertOne({ "ï»¿InvoiceNo": "8569I", "StockCode": "33572" , "Description": "Big Car", "Quantity": 3, "InvoiceDate": "01-12-2010  08:26:00" , "UnitPrice": "234", "CustomerID": "17859" , "Country": "United Kingdom"})',
