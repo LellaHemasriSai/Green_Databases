@@ -1349,8 +1349,8 @@ def execute_mongodb_query(query, db_name):
         arr = ast.literal_eval(aggregation_stage)
         list_of_objects = [arr]
         result = db[collection_name].aggregate(list_of_objects)
-        for document in result:
-            print(document)
+        # for document in result:
+        #     print(document)
         
     elif "distinct" in query_field:
         print("finding distinct documents")
